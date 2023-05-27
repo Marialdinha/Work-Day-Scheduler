@@ -8,9 +8,9 @@ var currrentHour;
 function init(){
 
   // get todays's date
-  todaysDate =  dayjs().format("dddd, MMMM D YYYY");
+  todaysDate = new dayjs().format("dddd, MMMM D YYYY");
   $('#currentDay').text(todaysDate);
-  // get current hour
+  // get current hour and set hour color
   checkCurrentHour();
   // popuate calendar with existing events
   retrieveEvents();
@@ -34,46 +34,49 @@ function init(){
   // }
   }
 
-  // function saveEvents(event){
+  function saveEvents(buttonHour){
 
-  // }
-
+    // var newEvent = {
+    //     eventHour: XXXXXXXXXX,
+    //     message: XXXXXXXXXXXX,  
+    // }
+  }
 
   // Function to set color to each hour
  function checkCurrentHour(){
   currrentHour = new dayjs().format("HH");
 
   $(".time-block").each(function(){
-      calendarHour = $(this).attr("id").substring(5)
+      var calendarHour = $(this).attr("id").substring(5);
       if (calendarHour === currrentHour){
-         $(this).addClass("present")
+         $(this).addClass("present");
       }else if(calendarHour < currrentHour){
-         $(this).addClass("past") 
+         $(this).addClass("past") ;
       }else {
-        $(this).addClass("future")
+        $(this).addClass("future");
       }
   })
  }
 
+
+ // Seting event listener for eacj save button
  function setEventListeners(){
 
-  
+    $(".time-block").each(function(){
+      $(this).children("button").on("click",function(event){
+         event.preventDefault();
+         var calendarHour = $(this).parent(".time-block").attr("id").substring(5);
+         saveEvents(calendarHour);
+      })
+})
 }
 
 
+// When document is ready, initialize functions
 $(document).ready(function(){
-
-  init();
-  setEventListeners();
+    init();
+    setEventListeners();
 })
-
-
-
-
-
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
 
 
 
@@ -85,15 +88,9 @@ $(document).ready(function(){
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
   //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
   //
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
-  // TODO: Add code to display the current date in the header of the page.
 // });
