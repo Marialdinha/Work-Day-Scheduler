@@ -6,8 +6,8 @@ var currrentHour;
 // Initialization
 function init(){
 
+   // Hidding message Appointment Added
   $("#appointment-added").hide();
-
   // get todays's date
   todaysDate = new dayjs().format("dddd, MMMM D YYYY");
   $('#currentDay').text(todaysDate);
@@ -21,7 +21,6 @@ function init(){
  // popuate calendar with existing events in localstorage
   function retrieveEvents(){
 
-   console.log(localStorage);
   if (localStorage !== null) {
     for(index = 0; index < localStorage.length; index++){
         var keyHour = localStorage.key(index);
@@ -36,16 +35,22 @@ function init(){
 
     var message =  $(`#hour-${buttonHour}`).children("textarea").val();
 
-    if  (message === null){
-        localStorage.removeItem(buttonHour);  //<-- here not working
+    if  (message === null || message === ""){
+        localStorage.removeItem(buttonHour);  
     }else {
         localStorage.setItem(buttonHour, message);
+
+        // Showing message Appointment Added (4 seconds)
+        $("#appointment-added").show();
+        setTimeout(() => {
+           $("#appointment-added").hide();
+        }, 4000);
     }
           
         // Refresh page wth new events
         retrieveEvents();
 
-        $("#appointment-added").show();
+     
   }
 
 
