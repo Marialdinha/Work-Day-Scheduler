@@ -1,5 +1,4 @@
 // our vqriables
-var eachHour = [];
 var todaysDate;
 var currrentHour;
 
@@ -17,30 +16,35 @@ function init(){
   }
 
 
- // popuate calendar with existing events
+ // popuate calendar with existing events in localstorage
   function retrieveEvents(){
 
-      // eachHour = [];
-  // var toDoEvents = JSON.parse(localStorage.getItem("allEvents")) || [];
-  
-  // if (toDoEvents.length > 0) {
-  
-  //   var hour = 9;
-  //   for(index = 0; index < toDoEvents.length; index++){
-  //     $(`#hour-${hour}`).text(toDoEvents[index]);
-  //     hour++;
-  // }
-     
-  // }
+  if (localStorage !== null) {
+    for(index = 0; index < localStorage.length; index++){
+        var keyHour = localStorage.key(index);
+        var mssage = localStorage.getItem(index);
+        $(`#hour-${keyHour}`).text(mssage);
+  }}else{
+
+  }
   }
 
+  // Function to save events to localstorage
   function saveEvents(buttonHour){
+    console.log(buttonHour);
+    var message =  $(`#hour-${buttonHour}`).children("textarea").value;
+    console.log(message); 
 
-    // var newEvent = {
-    //     eventHour: XXXXXXXXXX,
-    //     message: XXXXXXXXXXXX,  
-    // }
+    if  (message === null){
+        localStorage.removeItem(buttonHour);
+    }else {
+        localStorage.setItem(buttonHour, message);
+    }
+          
+        // Refresh page wth new events
+        retrieveEvents();
   }
+
 
   // Function to set color to each hour
  function checkCurrentHour(){
@@ -59,14 +63,14 @@ function init(){
  }
 
 
- // Seting event listener for eacj save button
+ // Seting event listener for each save button
  function setEventListeners(){
 
     $(".time-block").each(function(){
       $(this).children("button").on("click",function(event){
          event.preventDefault();
-         var calendarHour = $(this).parent(".time-block").attr("id").substring(5);
-         saveEvents(calendarHour);
+         var buttonHour = $(this).parent(".time-block").attr("id").substring(5);
+         saveEvents(buttonHour, );
       })
 })
 }
